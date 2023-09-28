@@ -1,58 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catelog/utils/routes.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String name = "";
+  bool buttonPressed = false;
   @override
   Widget build(BuildContext context) {
     return Material(
         color: Colors.white,
-        child: Column(
-          children: [
-            Image.asset(
-              "assets/images/login_image.png",
-              fit: BoxFit.scaleDown,
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            const Text(
-              "Welcome Harun Boss!",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/images/login_image.png",
+                fit: BoxFit.scaleDown,
               ),
-            ),
-            const SizedBox(height: 20.0),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: "Enter Username",
-                      labelText: "Username",
-                    ),
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Passowrd",
-                      labelText: "Password",
-                    ),
-                  ),
-                  const SizedBox(height: 35.0),
-                  ElevatedButton(
-                    style:
-                        TextButton.styleFrom(minimumSize: const Size(150, 50)),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, MyRoutes.homeRoute),
-                    child: Text("Login!"),
-                  )
-                ],
+              const SizedBox(
+                height: 20.0,
               ),
-            ),
-          ],
+              Text(
+                "Welcome $name",
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 40.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Enter Username",
+                          labelText: "Username",
+                        ),
+                        onChanged: (value) {
+                          name = value;
+                          setState(() {});
+                        }),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Passowrd",
+                        labelText: "Password",
+                      ),
+                    ),
+                    const SizedBox(height: 35.0),
+                    InkWell(
+                      onTap: () async {
+                        setState(() {});
+                        buttonPressed = true;
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        Navigator.pushNamed(context, MyRoutes.homeRoute);
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        height: 50,
+                        width: buttonPressed ? 60 : 150,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius:
+                                BorderRadius.circular(buttonPressed ? 20 : 8)),
+                        child: buttonPressed
+                            ? const Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                "Login",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }
